@@ -1,0 +1,19 @@
+# Node modules
+client/node_modules
+server/node_modules
+
+# Dist
+client/dist/
+server/dist/
+
+# .Env
+client/.env.*
+server/.env.*
+
+# Next
+client/.next
+
+# .History
+.history
+client/.history
+server/.history

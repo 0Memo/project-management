@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+  @apply text-sm;
+  @apply bg-white;
+  @apply dark:bg-black;
+}
+
+.timeline ._3_ygE {
+  @apply rounded-tl-md border border-r-0 border-[#e6e4e4] dark:border-black bg-[#101828]  text-white;
+}
+
+.timeline ._2eZzQ {
+  @apply border-[#e6e4e4] dark:border-black;
+}
+
+.timeline ._2dZTy {
+  @apply fill-white dark:fill-[#6a7282];
+}
+
+.timeline ._2dZTy:nth-child(even) {
+  @apply fill-[#f5f5f5] dark:fill-[#f5f5f5];
+}
+
+.timeline ._35nLX {
+  @apply fill-[#333] stroke-[#e6e4e4] dark:fill-[#f5f5f5];
+}
+
+.timeline ._9w8d5 {
+  @apply fill-[#333] dark:fill-black;
+}
+
+/* Timeline Tasks part above graph */
+
+.timeline ._34SS0 {
+  @apply bg-[#f5f5f5] dark:bg-[#101828] text-white;
+}
+
+.timeline ._34SS0:nth-of-type(even) {
+  @apply bg-[#f5f5f5] dark:bg-[#101828] text-white;
+}
+
+.timeline ._RuwuK,
+.timeline ._3rUKi,
+.timeline ._1rLuZ {
+  @apply stroke-[#333] dark:stroke-[#333];
+}
+
+.timeline ._3ZbQT {
+  @apply border-l-0 border-[#e6e4e4] dark:border-black;
+}
+
+.timeline ._3T42e {
+  @apply bg-white dark:bg-black;
+}
+
+.timeline ._29NTg {
+  @apply dark:text-white;
+}
+
+.timeline ._2q1Kt {
+  @apply fill-black;
+}
+
+.timeline ._3zRJQ {
+  @apply fill-white ;
+}
+
+.timeline ._25P-K {
+  @apply bg-["#101828"] text-white;
+}
+
+._2k9Ys {
+  position: fixed;
+  left: 1.8em;
+  width: 77.5vw;
+}
+
+.custom-date-input-dark::-webkit-calendar-picker-indicator {
+  filter: invert(100%);
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.custom-date-input-light::-webkit-calendar-picker-indicator {
+  font-size: 18px;
+  margin-right: 8px;
+}
