@@ -45,7 +45,7 @@ const Sidebar = () => {
                 </div>
                 {/** Team */}
                 <div className={`flex items-center gap-5 border-y-[1.5px] px-8 py-4 ${isDarkMode ? 'border-gray-700' : 'border-gray-400' }`}>
-                    <Image src="/colombia.png" alt="logo" width={40} height={40} priority={false} />
+                    <Image src="https://pm-s3-images-memo.s3.us-east-1.amazonaws.com/colombia.png" alt="logo" width={40} height={40} priority={false} />
                     <div>
                         <h3 className={`text-md font-bold tracking-wide ${isDarkMode ? 'text-gray-200' : 'text-gray-900' }`}>
                             ÉQUIPE MEMO

@@ -14,7 +14,7 @@ const UserCard = ({ user }: UserCardProps) => {
         >
             { user.profilePictureUrl && (
                 <Image
-                    src={`/p1.jpeg`}
+                    src={`https://pm-s3-images-memo.s3.us-east-1.amazonaws.com/p1.jpeg`}
                     alt="image profil"
                     width={ 32 }
                     height={ 32 }
