@@ -24,7 +24,6 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const HomePage = () => {
     const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
-    console.log('isDarkMode', isDarkMode);
 
     const { data: tasks, isLoading: tasksLoading, isError: tasksError } = useGetTasksQuery({ projectId: parseInt("1") });
     const { data: projects, isLoading: isProjectsLoading } = useGetProjectsQuery();
