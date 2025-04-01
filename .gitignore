@@ -1,6 +1,6 @@
 # Node modules
-client/node_modules
-server/node_modules
+client/node_modules/
+server/node_modules/
 
 # Dist
 client/dist/
@@ -11,9 +11,9 @@ client/.env.*
 server/.env.*
 
 # Next
-client/.next
+client/.next/
 
 # .History
-.history
-client/.history
-server/.history
+.history/
+client/.history/
+server/.history/
