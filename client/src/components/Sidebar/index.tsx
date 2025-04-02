@@ -1,12 +1,15 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppDispatch, useAppSelector } from '@/app/redux';
 import { setIsSidebarCollapsed } from '@/state';
-import { AlertCircle, AlertOctagon, AlertTriangle, ChevronDown, ChevronUp, FileClock, FolderOpenDot, History, HousePlus, GlobeLock, LucideIcon, Settings, ShieldAlert, SquareMinus, TextSearch, UserRound, UsersRound } from 'lucide-react';
+import { AlertCircle, AlertOctagon, AlertTriangle, ChevronDown, ChevronUp, FileClock, FolderOpenDot, History, HousePlus, GlobeLock, LucideIcon, Settings, ShieldAlert, SquareMinus, TextSearch, User, UserRound, UsersRound } from 'lucide-react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 import Link from "next/link";
 import { useGetProjectsQuery } from '@/state/api';
+import { useGetAuthUserQuery } from '@/state/api';
+import { signOut } from "aws-amplify/auth";
 
 const Sidebar = () => {
     const [showProjects, setShowProjects] = useState(true);
@@ -18,6 +21,18 @@ const Sidebar = () => {
     const isSidebarCollapsed = useAppSelector(
         (state) => state.global.isSidebarCollapsed,
     );
+
+    const { data: currentUser } = useGetAuthUserQuery({});
+    const handleSignOut = async () => {
+        try {
+            await signOut();
+        } catch (error: any) {
+            console.error("Erreur lors de la déconnexion: ", error);
+        }
+    }
+
+    if (!currentUser) return null;
+    const currentUserDetails = currentUser?.userDetails;
 
     const sidebarClassNames=`fixed flex flex-col h-[100%] overflow-x-hidden justify-between shadow-xl transition-all duration-300 h-full z-40 overflow-y-auto
         ${isSidebarCollapsed ? 'w-0 hidden' : 'w-64'}
@@ -112,6 +127,50 @@ const Sidebar = () => {
                         <SidebarLink icon={FileClock} label="Tâches" href="/priority/backlog" />
                     </>
                 )}
+            </div>
+            <div
+                className={`z-10 mt-32 flex w-full flex-col
+                    items-center gap-4 px-8 py-4 md:hidden
+                    ${isDarkMode ? "bg-gray-900" : "bg-gray-200" }
+                `}
+            >
+                <div className="flex w-full items-center">
+                    <div className="align-center flex h-9 w-9 justify-center">
+                        { !!currentUserDetails?.profilePictureUrl ? (
+                            <Image
+                                src={`https://pm-s3-images-memo.s3.us-east-1.amazonaws.com/${currentUserDetails?.profilePictureUrl}`}
+                                alt={currentUserDetails?.username || "Image de profil"}
+                                width={100}
+                                height={50}
+                                className='h-full rounded-full object-cover'
+                            />
+                        ) : (
+                            <User
+                                className={`
+                                    h6 w-6 cursor-pointer self-center rounded-full
+                                    ${isDarkMode ? "text-white" : "text-gray-900" }
+                                `}
+                            />
+                        )}
+                    </div>
+                    <span
+                        className={`
+                            mx-3
+                            ${isDarkMode ? "text-white" : "text-gray-900" }
+                        `}
+                    >
+                        { currentUserDetails?.username}
+                    </span>
+                    <button
+                        className={`self-start rounded px-4 py-2 text-xs font-bold md:block text-white border-2 border-transparent transform
+                        cursor-pointer
+                            ${isDarkMode ? "bg-purple-900 hover:bg-white hover:text-purple-900 hover:border-purple-900" : "bg-purple-800 hover:bg-white hover:text-purple-800 hover:border-purple-800" }
+                        `}
+                        onClick={ handleSignOut }
+                    >
+                        Déconnexion
+                    </button>
+                </div>
             </div>
         </div>
     );

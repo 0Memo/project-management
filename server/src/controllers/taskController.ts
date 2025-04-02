@@ -3,10 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getTasks = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
+export const getTasks = async ( req: Request, res: Response ): Promise<void> => {
     const { projectId } = req.query;
     try {
         const tasks = await prisma.task.findMany({
@@ -22,14 +19,13 @@ export const getTasks = async (
         });
         res.json(tasks);
     } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la recherche de tâches: ${ error.message }` });
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la recherche de tâches: ${ error.message }` });
     }
 };
 
-export const createTask = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
+export const createTask = async ( req: Request, res: Response ): Promise<void> => {
     const {
         title,
         description,
@@ -59,9 +55,13 @@ export const createTask = async (
                 assignedUserId,
             },
         });
-        res.status(201).json(newTask);
+        res
+            .status(201)
+            .json(newTask);
     } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la création de la tâche: ${ error.message }` });
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la création de la tâche: ${ error.message }` });
     }
 };
 
@@ -79,14 +79,13 @@ export const updateTaskStatus = async ( req: Request, res: Response ): Promise<v
         });
         res.json(updatedTask);
     } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la mise à jour de la tâche ${taskId}: ${error.message}` });
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la mise à jour de la tâche ${taskId}: ${error.message}` });
     }
 };
 
-export const getUserTasks = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
+export const getUserTasks = async ( req: Request, res: Response ): Promise<void> => {
     const { userId } = req.params;
     try {
         const tasks = await prisma.task.findMany({
@@ -103,6 +102,8 @@ export const getUserTasks = async (
         });
         res.json(tasks);
     } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la recherche de tâches d'utilisateur: ${error.message}` });
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la recherche de tâches d'utilisateur: ${error.message}` });
     }
 };

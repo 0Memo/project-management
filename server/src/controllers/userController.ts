@@ -3,15 +3,30 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getUsers = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
+export const getUsers = async ( req: Request, res: Response ): Promise<void> => {
     try {
         const users = await prisma.user.findMany();
         res.json(users);
     } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la recherche d'utilisateurs: ${ error.message }` });
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la recherche d'utilisateurs: ${ error.message }` });
+    }
+};
+
+export const getUser = async ( req: Request, res: Response ): Promise<void> => {
+    const { cognitoId } = req.params;
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                cognitoId: cognitoId,
+            },
+        });
+        res.json(user);
+    } catch (error: any) {
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la recherche de l'utilisateur: ${error.message}` });
     }
 };
 
@@ -34,21 +49,8 @@ export const postUser = async (req: Request, res: Response) => {
         });
         res.json({ message: "Utilisateur créé", newUser });
     } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la recherche d'utilisateurs: ${ error.message }` });
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la recherche d'utilisateurs: ${ error.message }` });
     }
 };
-
-/* export const updateUser = async ( req: Request, res: Response ): Promise<void> => {
-    const { userId } = req.params;
-    const { status } = req.body;
-    try {
-        const updatedUser = await prisma.user.update({
-            where: {
-                id: Number(userId),
-            },
-        });
-        res.json(updatedUser);
-    } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la mise à jour de l'utilisateur ${userId}: ${error.message}` });
-    }
-}; */

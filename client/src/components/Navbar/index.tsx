@@ -1,13 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { SquareMenu, Moon, Settings, SunMedium, TextSearch } from 'lucide-react';
+import { SquareMenu, Moon, Settings, SunMedium, TextSearch, User } from 'lucide-react';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/app/redux';
 import { setIsDarkMode, setIsSidebarCollapsed } from '@/state';
+import { useGetAuthUserQuery } from '@/state/api';
+import { signOut } from "aws-amplify/auth";
+import Image from 'next/image';
 
 const Navbar = () => {
     const dispatch = useAppDispatch();
     const isSidebarCollapsed = useAppSelector((state) => state.global.isSidebarCollapsed);
     const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+
+    const { data: currentUser } = useGetAuthUserQuery({});
+    const handleSignOut = async () => {
+        try {
+            await signOut();
+        } catch (error: any) {
+            console.error("Erreur lors de la déconnexion: ", error);
+        }
+    }
+
+    if (!currentUser) return null;
+    const currentUserDetails = currentUser?.userDetails;
 
     return (
         <div className={`
@@ -66,6 +82,43 @@ const Navbar = () => {
                     />
                 </Link>
                 <div className={`ml-2 mr-5 hidden min-h-[2em] w-[0.1rem] md:inline-block ${isDarkMode ? 'bg-gray-200' : 'bg-black'}`}></div>
+                <div className="hidden items-center justify-between md:flex">
+                    <div className="align-center flex h-9 w-9 justify-center">
+                        { !!currentUserDetails?.profilePictureUrl ? (
+                            <Image
+                                src={`https://pm-s3-images-memo.s3.us-east-1.amazonaws.com/${currentUserDetails?.profilePictureUrl}`}
+                                alt={currentUserDetails?.username || "Image de profil"}
+                                width={100}
+                                height={50}
+                                className='h-full rounded-full object-cover'
+                            />
+                        ) : (
+                            <User
+                                className={`
+                                    h6 w-6 cursor-pointer self-center rounded-full
+                                    ${isDarkMode ? "text-white" : "text-gray-900" }
+                                `}
+                            />
+                        )}
+                    </div>
+                    <span
+                        className={`
+                            mx-3
+                            ${isDarkMode ? "text-white" : "text-gray-900" }
+                        `}
+                    >
+                        { currentUserDetails?.username}
+                    </span>
+                    <button
+                        className={`hidden rounded px-4 py-2 text-xs font-bold md:block text-white border-2 border-transparent transform
+                        cursor-pointer
+                            ${isDarkMode ? "bg-purple-900 hover:bg-white hover:text-purple-900 hover:border-purple-900" : "bg-purple-800 hover:bg-white hover:text-purple-800 hover:border-purple-800" }
+                        `}
+                        onClick={ handleSignOut }
+                    >
+                        Déconnexion
+                    </button>
+                </div>
             </div>
         </div>
     )

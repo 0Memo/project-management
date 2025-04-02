@@ -3,10 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getTeams = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
+export const getTeams = async ( req: Request, res: Response ): Promise<void> => {
     try {
         const teams = await prisma.team.findMany();
         const teamsWithUsernames = await Promise.all(
@@ -31,6 +28,8 @@ export const getTeams = async (
 
         res.json(teamsWithUsernames);
     } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la recherche d'équipes: ${ error.message }` });
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la recherche d'équipes: ${ error.message }` });
     }
 };

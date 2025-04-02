@@ -3,10 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const search = async (
-    req: Request,
-    res: Response
-): Promise<void> => {
+export const search = async ( req: Request, res: Response ): Promise<void> => {
     const { query } = req.query;
     try {
         const tasks = await prisma.task.findMany({
@@ -46,6 +43,8 @@ export const search = async (
         });
         res.json({ tasks, projects, users });
     } catch (error: any) {
-        res.status(500).json({ message: `Erreur lors de la recherche: ${ error.message }` });
+        res
+            .status(500)
+            .json({ message: `Erreur lors de la recherche: ${ error.message }` });
     }
 };

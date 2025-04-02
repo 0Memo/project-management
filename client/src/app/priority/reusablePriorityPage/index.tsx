@@ -9,6 +9,7 @@ import { Priority, Task, useGetTasksByUserQuery } from '@/state/api';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import { format } from 'date-fns';
+import { useGetAuthUserQuery } from '@/state/api';
 
 type PriorityProps = {
     priority: Priority
@@ -82,7 +83,8 @@ const ReusablePriorityPage = ({ priority }: PriorityProps) => {
     const [ view, setView ] = useState("list");
     const [ isModalNewTaskOpen, setIsModalNewTaskOpen ] = useState(false);
 
-    const userId = 1;
+    const { data: currentUser } = useGetAuthUserQuery({});
+    const userId = currentUser?.userDetails?.userId ?? null;
     const { data: tasks, isLoading, isError: isTasksError } = useGetTasksByUserQuery(userId || 0, {
         skip: userId === null
     });
