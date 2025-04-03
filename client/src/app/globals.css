@@ -97,3 +97,8 @@ body,
   font-size: 18px;
   margin-right: 8px;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
