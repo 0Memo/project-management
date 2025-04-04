@@ -5,6 +5,12 @@ const prisma = new PrismaClient();
 
 export const getTasks = async ( req: Request, res: Response ): Promise<void> => {
     const { projectId } = req.query;
+
+    if (!projectId) {
+        res.status(400).json({ message: "Project ID is required." });
+        return;
+    }
+    
     try {
         const tasks = await prisma.task.findMany({
             where: {
