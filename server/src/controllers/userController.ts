@@ -30,15 +30,19 @@ export const getUser = async ( req: Request, res: Response ): Promise<void> => {
     }
 };
 
-export const postUser = async (req: Request, res: Response) => {
-    
+export const postUser = async (req: Request, res: Response): Promise<void> => {
+    const { username, cognitoId, profilePictureUrl = "i1.jpg", teamId = 1 } = req.body;
+
     try {
-        const {
-            username,
-            cognitoId,
-            profilePictureUrl = "i1.jpg",
-            teamId = 1,
-        } = req.body;
+        const existingUser = await prisma.user.findUnique({
+            where: { cognitoId },
+        });
+
+        if (existingUser) {
+            res.status(200).json({ message: "L'utilisateur existe déjà", user: existingUser });
+            return;
+        }
+
         const newUser = await prisma.user.create({
             data: {
                 username,
