@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { SquareMenu, Moon, Settings, SunMedium, TextSearch, User } from 'lucide-react';
+import { SquareMenu, Settings, TextSearch, User } from 'lucide-react';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/app/redux';
 import { setIsDarkMode, setIsSidebarCollapsed } from '@/state';
 import { useGetAuthUserQuery } from '@/state/api';
 import { signOut } from "aws-amplify/auth";
 import Image from 'next/image';
+import { motion as m } from "motion/react";
 
 const Navbar = () => {
     const dispatch = useAppDispatch();
@@ -24,6 +25,11 @@ const Navbar = () => {
 
     if (!currentUser) return null;
     const currentUserDetails = currentUser?.userDetails;
+
+    const sunPath =
+        "M47.5 66C57.7173 66 66 57.7173 66 47.5C66 37.2827 57.7173 29 47.5 29C37.2827 29 29 37.2827 29 47.5C29 57.7173 37.2827 66 47.5 66Z";
+    const moonPath =
+        "M47.5 66C57.7173 66 66 57.7173 66 47.5C53.8529 51.5473 41.8284 47.6586 47.5 29C37.2827 29 29 37.2827 29 47.5C29 57.7173 37.2827 66 47.5 66Z";
 
     return (
         <div className={`
@@ -63,11 +69,45 @@ const Navbar = () => {
                             : `rounded p-2 hover:bg-gray-100`
                     }
                 >
-                    {isDarkMode ? (
-                        <SunMedium className={`h-6 w-6 cursor-pointer ${isDarkMode ? 'text-white' : ''}`} />
-                    ): (
-                        <Moon className={`h6- w-6 cursor-pointer ${isDarkMode ? '' : 'bg-gray-50 text-black'}`} />
-                    )}
+                    <div className="h-4 w-4 mr-6 -mt-4">
+                        <m.svg width="30" height="30" viewBox="0 0 95 95" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <m.g
+                                transform={isDarkMode ? "translate(4 6)" : "translate(0 0)"}
+                            >
+                                <m.path
+                                d={isDarkMode ? moonPath : sunPath}
+                                animate={{
+                                    fillOpacity: 0.35,
+                                    strokeOpacity: 1,
+                                    fill: isDarkMode ? "#60a5fa" : "#ca8a04",
+                                    stroke: isDarkMode ? "#60a5fa" : "#ca8a04",
+                                    rotate: isDarkMode ? 360 : 0,
+                                    scale: isDarkMode ? 2 : 1,
+                                }}
+                                initial={false}
+                                />
+                            </m.g>
+
+                            <m.g
+                                className="stroke-6 stroke-yellow-600"
+                                initial={{ opacity: 0 }}
+                                animate={{
+                                opacity: isDarkMode ? 0 : 1,
+                                scale: isDarkMode ? 0.8 : 1,
+                                transition: { duration: 0.8 },
+                                }}
+                            >
+                                <path d="M47.5 1.25V10.5" />
+                                <path d="M47.5 84.5V93.75" />
+                                <path d="M14.8012 14.8012L21.3225 21.3225" />
+                                <path d="M73.6775 73.6775L80.1987 80.1987" />
+                                <path d="M1.25 47.5H10.5" />
+                                <path d="M84.5 47.5H93.75" />
+                                <path d="M21.3225 73.6775L14.8012 80.1987" />
+                                <path d="M80.1987 14.8012L73.6775 21.3225" />
+                            </m.g>
+                            </m.svg>
+                    </div>
                 </button>
                 <Link
                     href="/settings"
@@ -124,4 +164,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default Navbar;
